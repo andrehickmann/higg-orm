@@ -4,7 +4,7 @@
   "description": "basic orm with support for mysql-database",
   "main": "index.ts",
   "scripts": {
-    "test": "npm test"
+    "test": "mocha -r ts-node/register ./test/test.ts"
   },
   "repository": {
     "type": "git",
@@ -23,5 +23,16 @@
   "bugs": {
     "url": "https://github.com/andrehickmann/higg-orm/issues"
   },
-  "homepage": "https://github.com/andrehickmann/higg-orm#readme"
+  "homepage": "https://github.com/andrehickmann/higg-orm#readme",
+  "dependencies": {
+    "underscore": "^1.8.3"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.0.0",
+    "@types/mocha": "^2.2.41",
+    "chai": "^4.0.2",
+    "mocha": "^3.4.2",
+    "ts-node": "^3.0.6",
+    "typings": "^2.1.1"
+  }
 }
