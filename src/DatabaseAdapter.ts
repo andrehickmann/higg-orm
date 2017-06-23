@@ -7,6 +7,10 @@ export class DatabaseAdapter implements AdapterInterface {
     private connection: ConnectionInterface;
     private adapterName: string;
 
+    /**
+     * @param connDetail ConnectionInterface    data to establish connection to the database
+     * @param name string   name of the database adapter
+     */
     constructor(connDetail: ConnectionInterface, name: string) {
         this.connection = connDetail;
         this.adapterName = name;
@@ -19,8 +23,8 @@ export class DatabaseAdapter implements AdapterInterface {
      * @return result ResultInterface
      */
     query(query: QueryInterface): ResultInterface {
-        this.connection.open();
-        return null;
+        let connection = this.connection.open();
+        return connection.query(query);
     }
 
     connect(): ConnectionInterface {
