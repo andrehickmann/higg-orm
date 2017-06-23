@@ -4,6 +4,7 @@
   "description": "basic orm with support for mysql-database",
   "main": "index.ts",
   "scripts": {
+    "test-ts": "ts-node test/test.ts",
     "test": "mocha -r ts-node/register ./test/test.ts",
     "dev": "npm run test.ts"
   },
