@@ -1,4 +1,4 @@
-import {QueryInterface} from "./QueryInterface";
+import {QueryInterface} from "../../../Query/Interface";
 
 export class MysqlQuerySelect implements QueryInterface {
     private query: string;
@@ -7,8 +7,8 @@ export class MysqlQuerySelect implements QueryInterface {
     private where: object;
     private order: object;
     private limitData: {
-        count: 0,
-        page: 0
+        count: number,
+        page: number
     };
 
     readonly CONST_SELECT = 'SELECT';
@@ -35,7 +35,7 @@ export class MysqlQuerySelect implements QueryInterface {
         return this;
     }
 
-    limit(count, page): MysqlQuerySelect {
+    limit(count: number, page: number): MysqlQuerySelect {
         this.limitData = {count: count, page: page};
         return this;
     }

@@ -1,5 +1,5 @@
-import { AdapterInterface } from './AdapterInterface';
-import {TableInterface} from "./TableInterface";
+import { AdapterInterface } from './Adapter/Interface';
+import {TableInterface} from "./Table/Interface";
 
 export class Table implements TableInterface {
 

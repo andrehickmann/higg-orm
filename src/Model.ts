@@ -1,12 +1,12 @@
-import {Table} from './Table';
-import {RowData} from './RowData';
+import {Table} from './Database/Table';
+import {ResultRow} from './Database/Result/Row';
 
 export abstract class Model {
-    private data: Array<RowData>;
+    private data: ResultRow;
     private tableInstance: Table;
 
     constructor(
-        data: Array<RowData>,
+        data: ResultRow,
         table: Table
     ) {
         this.tableInstance = table;

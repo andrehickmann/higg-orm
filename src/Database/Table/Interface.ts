@@ -1,4 +1,4 @@
-import {AdapterInterface} from "./AdapterInterface";
+import {AdapterInterface} from "../Adapter/Interface";
 
 export interface TableInterface {
     adapter(): AdapterInterface;
