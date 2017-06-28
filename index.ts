@@ -1,7 +1,5 @@
 export { Model } from './src/Model';
-export { Table } from './src/Table';
-
-export {DatabaseAdapter} from './src/DatabaseAdapter';
-
-export {MysqlConnection} from './src/MysqlConnection';
-export {MysqlDatabaseAdapter} from './src/MysqlDatabaseAdapter';
+export { Table } from './src/Database/Table';
+export { DatabaseAdapter } from './src/Database/Adapter';
+export { MysqlConnection } from './src/Database/Adapter/Mysql/Connection';
+export { MysqlQuerySelect } from './src/Database/Adapter/Mysql/Query/Select';

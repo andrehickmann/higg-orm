@@ -18,6 +18,11 @@ export class MysqlQuerySelect implements QueryInterface {
 
     constructor() {}
 
+    /**
+     * Generating a mysql-select-query out of the current select-object.
+     *
+     * @return {string}
+     */
     assemble(): string {
         this.query = this.CONST_SELECT
                    + ' * '
@@ -30,13 +35,30 @@ export class MysqlQuerySelect implements QueryInterface {
         return this.query;
     }
 
+    /**
+     * Selecting which table you want query. returning the MysqlQuerySelect object
+     * for a fluent interface.
+     *
+     * @param tableName string
+     * @return {MysqlQuerySelect}
+     */
     from(tableName: string): MysqlQuerySelect {
         this.tableFrom = tableName;
         return this;
     }
 
-    limit(count: number, page: number): MysqlQuerySelect {
-        this.limitData = {count: count, page: page};
+    /**
+     * Limiting the result by count and an given offset. If no offset is given, assuming zero offset.
+     *
+     * @param count
+     * @param offset
+     * @return {MysqlQuerySelect}
+     */
+    limit(count: number, offset?: number): MysqlQuerySelect {
+        if (!offset) {
+            offset = 0;
+        }
+        this.limitData = {count: count, page: offset};
         return this;
     }
 }

@@ -1,7 +1,5 @@
 import { expect } from 'chai';
-import {MysqlDatabaseAdapter, DatabaseAdapter, MysqlConnection} from '../index';
-import {ConnectionInterface} from "../src/ConnectionInterface";
-import {MysqlQuerySelect} from "../src/MysqlQuerySelect";
+import {DatabaseAdapter, MysqlConnection, MysqlQuerySelect} from '../index';
 
 let connDetails ={
     host: '192.168.101.120',
@@ -10,28 +8,19 @@ let connDetails ={
     database: 'advoport_provider_240260'
 };
 
-let adapter = new MysqlDatabaseAdapter(
-    new DatabaseAdapter(
-        new MysqlConnection(connDetails),
-        'provider_db'
-    )
+let adapter = new DatabaseAdapter(
+    new MysqlConnection(connDetails),
+    'provider_db'
 );
 
-let connection = new Promise(function(resolve, reject) {
-    try {
-        let connection = adapter.connect();
-        resolve(connection);
-    } catch (error) {
-        reject(error);
-    }
-
-});
-
-connection.then(function(connection: ConnectionInterface) {
-    let query = new MysqlQuerySelect();
-    query.from('user').limit(1,0);
-    console.log(query.assemble());
-    adapter.query(query);
-}).catch(function(error){
-    console.log(error);
-});
+let query = new MysqlQuerySelect();
+query
+    .from('user')
+    .limit(1,0);
+adapter.query(query)
+    .then(result => {
+        console.log(result);
+    })
+    .catch(error => {
+      console.log('Error during querying mysql-database: ' + error);
+    });
