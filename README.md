@@ -69,7 +69,7 @@ make a pull-request. The repository can be found on [github](https://github.com/
 
 ## Tests
 
-``` 
+```
 npm test
 ```
   

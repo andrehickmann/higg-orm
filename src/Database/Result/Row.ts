@@ -1,22 +1,43 @@
 import {ResultRowInterface} from "./Row/Interface";
 
+/**
+ * Implementing a result from an select-query.
+ */
 export class ResultRow implements ResultRowInterface {
-    resColumns: Array<string>;
-    data: Array<any>;
+
+    origin: object;
+    valuesOfRow: Array<any>;
 
     constructor(
-        columns: Array<string>,
-        data: Array<any>
+        data: object
     ){
-        this.resColumns = columns;
-        this.data = data;
+        this.origin = data;
     }
 
+    /**
+     * returning all columns of the result-row
+     *
+     * @return {string[]}
+     */
     columns(): Array<string> {
-        return this.resColumns;
+        return Object.keys(this.origin);
     }
 
+    /**
+     * returning all values of the result-row
+     * @return {Array<any>}
+     */
     values(): Array<any> {
-        return this.data;
+        if (!this.valuesOfRow) {
+            this.valuesOfRow = new Array();
+            for (const key of this.columns()) {
+                this.valuesOfRow.push(this.origin[key]);
+            }
+        }
+        return this.valuesOfRow;
+    }
+
+    data(): any {
+        return this.origin;
     }
 }

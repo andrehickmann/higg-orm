@@ -2,9 +2,9 @@ import {QueryInterface} from "../../../Query/Interface";
 
 export class MysqlQuerySelect implements QueryInterface {
     private query: string;
-    private columns: object;
+    private columns: Array<string>;
     private tableFrom: string;
-    private where: object;
+    private whereData: Array<any> = new Array();
     private order: object;
     private limitData: {
         count: number,
@@ -15,6 +15,9 @@ export class MysqlQuerySelect implements QueryInterface {
     readonly CONST_FROM = 'FROM';
     readonly CONST_WHERE = 'WHERE';
     readonly CONST_LIMIT = 'LIMIT';
+
+    readonly CONST_OR = 'OR';
+    readonly CONST_AND = 'AND';
 
     constructor() {}
 
@@ -29,6 +32,14 @@ export class MysqlQuerySelect implements QueryInterface {
                    + this.CONST_FROM
                    + ' '
                    + this.tableFrom;
+        for (let i = 0; i < this.whereData.length; i++) {
+            this.query += ' ' + this.CONST_WHERE + ' ';
+            if (i > 1) {
+                this.query += this.whereData[i].type + ' ';
+            }
+
+            this.query += this.whereData[i].where;
+        }
         if (this.limitData.count > 0) {
             this.query += ' ' + this.CONST_LIMIT + ' ' + this.limitData.count;
         }
@@ -44,6 +55,25 @@ export class MysqlQuerySelect implements QueryInterface {
      */
     from(tableName: string): MysqlQuerySelect {
         this.tableFrom = tableName;
+        return this;
+    }
+
+    /**
+     * Adding where clause as a string. You can pass a type
+     * which defines how the where-clause is added (AND, OR).
+     *
+     * @param where
+     * @param type
+     * @return {MysqlQuerySelect}
+     */
+    where(where: string, type?: string): MysqlQuerySelect {
+        if (type && (type !== this.CONST_AND && type !== this.CONST_OR)) {
+            throw new Error('Please pass correct where-type');
+        }
+        if (!type) {
+            type = this.CONST_AND;
+        }
+        this.whereData.push({where: where, type: type});
         return this;
     }
 

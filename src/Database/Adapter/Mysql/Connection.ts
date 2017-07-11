@@ -29,11 +29,14 @@ export class MysqlConnection implements ConnectionInterface {
                 this.resource.connect(error => {
                     if (error) {
                         reject(error);
+                    } else {
+                        resolve(this);
                     }
-                    resolve(this);
+
                 })
+            } else {
+                resolve(this);
             }
-            resolve(this);
         })
     }
 
@@ -43,20 +46,21 @@ export class MysqlConnection implements ConnectionInterface {
         }
     }
 
-    query(query: QueryInterface): Promise<ResultInterface> {
+    query(query: QueryInterface): Promise<MysqlResult> {
         return new Promise((resolve, reject) => {
             return this.open()
                 .then(connection => {
                     connection.resource.query(query.assemble(), (error, results, fields) => {
                         if (error) {
                             reject(error);
+                        } else {
+                            this.lastQuery = query;
+                            resolve(new MysqlResult(results, fields));
                         }
-                        this.lastQuery = query;
-                        resolve(new MysqlResult(results, fields));
                     });
                 })
                 .catch(error => {
-                    console.log('Error querying mysql-database: ');
+                    console.log(error);
                 });
         })
     }

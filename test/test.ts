@@ -13,13 +13,18 @@ let adapter = new DatabaseAdapter(
     'provider_db'
 );
 
-let query = new MysqlQuerySelect();
-query
+let select = new MysqlQuerySelect();
+select
     .from('user')
-    .limit(1,0);
-adapter.query(query)
+    .where("username LIKE 'a%'")
+    .limit(10,0);
+console.log(select.assemble());
+adapter.query(select)
     .then(result => {
-        console.log(result);
+        for (let i = 0; i < result.count(); i++) {
+            console.log('Zeile ' + (i+1) + ':');
+            console.log(result.fetchRow());
+        }
     })
     .catch(error => {
       console.log('Error during querying mysql-database: ' + error);

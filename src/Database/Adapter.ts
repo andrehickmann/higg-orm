@@ -23,15 +23,13 @@ export class DatabaseAdapter implements AdapterInterface {
      * @return result ResultInterface
      */
     query(query: QueryInterface): Promise<ResultInterface> {
-        console.log('Adapter.ts: Connect to database...');
         return this.connect()
             .then(connection => {
                 return connection.query(query);
             })
             .catch(error => {
-                console.log('Error querying Database...');
+                throw new Error(error);
             })
-
     }
 
     /**
