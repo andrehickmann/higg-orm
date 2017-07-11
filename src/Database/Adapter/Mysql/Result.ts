@@ -73,7 +73,7 @@ export class MysqlResult implements ResultInterface {
         if (!data) {
             throw new Error('No data to map.');
         }
-        let mappedData = new Array();
+        let mappedData = [];
         for (const entry of data) {
             mappedData.push(new ResultRow(entry));
         }

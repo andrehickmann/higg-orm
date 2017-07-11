@@ -2,10 +2,8 @@ import {QueryInterface} from "../../../Query/Interface";
 
 export class MysqlQuerySelect implements QueryInterface {
     private query: string;
-    private columns: Array<string>;
     private tableFrom: string;
     private whereData: Array<any> = new Array();
-    private order: object;
     private limitData: {
         count: number,
         page: number

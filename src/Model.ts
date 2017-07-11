@@ -10,7 +10,6 @@ export abstract class Model {
         table: Table
     ) {
         this.tableInstance = table;
-
         this.mapData(data);
     }
 

@@ -8,7 +8,8 @@ export class Table implements TableInterface {
     private tableColumns: Array<string>;
 
     /**
-     * @param name name of the table
+     * @param tableName string
+     * @param adapter AdapterInterface
      */
     constructor(tableName:string, adapter: AdapterInterface) {
         this.tableName = tableName;

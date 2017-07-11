@@ -5,7 +5,6 @@
 import * as mysql from "mysql";
 
 import {ConnectionInterface} from "../../Connection/Interface";
-import {ResultInterface} from "../../Result/Interface";
 import {QueryInterface} from "../../Query/Interface";
 import {MysqlResult} from "./Result";
 

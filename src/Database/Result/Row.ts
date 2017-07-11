@@ -29,7 +29,7 @@ export class ResultRow implements ResultRowInterface {
      */
     values(): Array<any> {
         if (!this.valuesOfRow) {
-            this.valuesOfRow = new Array();
+            this.valuesOfRow = [];
             for (const key of this.columns()) {
                 this.valuesOfRow.push(this.origin[key]);
             }
