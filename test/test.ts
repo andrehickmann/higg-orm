@@ -2,8 +2,8 @@ import { expect } from 'chai';
 import {DatabaseAdapter, MysqlConnection, MysqlQuerySelect} from '../index';
 
 let connDetails ={
-    host: '192.168.101.120',
-    user: 'debitcontrol_app',
+    host: 'localhost',
+    user: 'root',
     password: 'Higg1983',
     database: 'advoport_provider_240260'
 };
@@ -16,8 +16,10 @@ let adapter = new DatabaseAdapter(
 let select = new MysqlQuerySelect();
 select
     .from('user')
-    .where("username LIKE 'a%'")
-    .limit(10,0);
+    .where('username LIKE ?', ['%a'])
+    .limit(10,0)
+    .order('username', 'DESC');
+
 console.log(select.assemble());
 adapter.query(select)
     .then(result => {

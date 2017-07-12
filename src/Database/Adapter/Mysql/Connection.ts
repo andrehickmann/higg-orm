@@ -49,7 +49,7 @@ export class MysqlConnection implements ConnectionInterface {
         return new Promise((resolve, reject) => {
             return this.open()
                 .then(connection => {
-                    connection.resource.query(query.assemble(), (error, results, fields) => {
+                    connection.resource.query(query.assemble(), query.params(), (error, results, fields) => {
                         if (error) {
                             reject(error);
                         } else {

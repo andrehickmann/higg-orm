@@ -25,7 +25,7 @@ export class DatabaseAdapter implements AdapterInterface {
     query(query: QueryInterface): Promise<ResultInterface> {
         return this.connect()
             .then(connection => {
-                return connection.query(query);
+                return connection.query(query.adapter(this));
             })
             .catch(error => {
                 throw new Error(error);
