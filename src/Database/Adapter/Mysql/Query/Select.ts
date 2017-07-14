@@ -3,6 +3,7 @@ import {AdapterInterface} from "../../Interface";
 
 export class MysqlQuerySelect implements QuerySelectInterface {
     private query: string;
+    private rows: Array<any>;
     private tableFrom: string;
     private orderData: Array<any> = [];
     private whereData: Array<any> = [];
@@ -24,7 +25,10 @@ export class MysqlQuerySelect implements QuerySelectInterface {
     readonly CONST_ORDER_DESC = 'DESC';
     readonly CONST_ORDER_ASC = 'ASC';
 
-    constructor() {}
+    constructor(adapter: AdapterInterface, rows?: Array<string>) {
+        this.adapter(adapter);
+        this.rows = rows;
+    }
 
     /**
      * Generating a mysql-select-query out of the current select-object.
@@ -32,40 +36,57 @@ export class MysqlQuerySelect implements QuerySelectInterface {
      * @return {string}
      */
     assemble(): string {
-        this.query = this.CONST_SELECT
-                   + ' * ' // has to be replaced with selected rows...
-                   + this.CONST_FROM
-                   + ' ??';
+        let params = [];
+
+        this.query = `${this.CONST_SELECT} `;
+        if (!this.rows) {
+            this.query += '* ';
+        } else {
+            for ( let iRow = 0; iRow < this.rows.length; iRow++) {
+                this.query += '??';
+                if (iRow < this.rows.length - 1) {
+                    this.query += ', ';
+                }
+                params.push(this.rows[iRow]);
+            }
+        }
+        this.query += ` ${this.CONST_FROM} ?? `;
+        params.push(this.tableFrom);
 
         // adding WHERE part
-        for (let i = 0; i < this.whereData.length; i++) {
-            if (i=== 0) {
-                this.query += ' ' + this.CONST_WHERE + ' ';
+        for (let iWhere = 0; iWhere < this.whereData.length; iWhere++) {
+            if (iWhere=== 0) {
+                this.query += `${this.CONST_WHERE} `;
             }
-            if (i > 1) {
-                this.query += this.whereData[i].type + ' ';
+            if (iWhere > 1) {
+                this.query += `${this.whereData[iWhere].type} `;
             }
-            this.query += this.whereData[i].where;
+            if (this.whereData[iWhere].where) {
+                this.query += this.whereData[iWhere].where;
+                params = params.concat(this.whereData[iWhere].params);
+            }
         }
 
         // adding ORDER BY part
         for (let iOrder = 0; iOrder < this.orderData.length; iOrder++) {
             if (iOrder === 0) {
-                this.query += ' ' + this.CONST_ORDER
+                this.query += ` ${this.CONST_ORDER}`;
             } else {
                 this.query += ',';
             }
-            this.query += ' ' + this.orderData[iOrder].by;
+            this.query += ' ??';
+            params.push(this.orderData[iOrder].by);
             if (this.orderData[iOrder].direction) {
-                this.query += ' ' + this.orderData[iOrder].direction;
+                this.query += ` ${this.orderData[iOrder].direction}`;
             }
         }
 
         // adding LIMIT part
         if (this.limitData.count > 0) {
-            this.query += ' ' + this.CONST_LIMIT + ' ' + this.limitData.count;
+            this.query += ` ${this.CONST_LIMIT} ${this.limitData.count}`;
         }
-        return this.query;
+
+        return this.databaseAdapter.format(this.query, params);
     }
 
     /**
@@ -93,9 +114,7 @@ export class MysqlQuerySelect implements QuerySelectInterface {
         if (type && (type !== this.CONST_AND && type !== this.CONST_OR)) {
             throw new Error('Please pass correct where-type');
         }
-        if (!type) {
-            type = this.CONST_AND;
-        }
+        type = type || this.CONST_AND;
         this.whereData.push({where: where, params: params, type: type});
         return this;
     }
@@ -119,9 +138,7 @@ export class MysqlQuerySelect implements QuerySelectInterface {
      * @return {MysqlQuerySelect}
      */
     limit(count: number, offset?: number): MysqlQuerySelect {
-        if (!offset) {
-            offset = 0;
-        }
+        offset = offset || 0;
         this.limitData = {count: count, page: offset};
         return this;
     }
@@ -134,7 +151,7 @@ export class MysqlQuerySelect implements QuerySelectInterface {
     params(): Array<any> {
        let params = [];
        params.push(this.tableFrom);
-       for (let i = 0; i < this.whereData.length; i++) {
+       for (let i in this.whereData) {
            params.push(this.whereData[i].params);
        }
        return params;

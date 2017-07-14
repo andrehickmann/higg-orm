@@ -40,7 +40,6 @@ export class Table implements TableInterface {
      * @return {Array<string>}
      */
     columns(): Array<string> {
-
         return this.tableColumns;
     }
 }

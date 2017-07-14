@@ -3,28 +3,35 @@
  * @see https://github.com/mysqljs/mysql
  */
 import * as mysql from "mysql";
+import * as Connection from "mysql/lib/Connection";
 
 import {ConnectionInterface} from "../../Connection/Interface";
 import {QueryInterface} from "../../Query/Interface";
 import {MysqlResult} from "./Result";
+import {AdapterInterface} from "../Interface";
+import {MysqlQuerySelect} from "./Query/Select";
+import {MysqlConnectionDetail} from "./Connection/Detail";
 
 /**
  * implementation of an mysql-connection for the database-adapter.
  */
 export class MysqlConnection implements ConnectionInterface {
 
-    private resource: mysql;
-    private connectionDetails: object;
-    private lastQuery: QueryInterface;
+    private resource: Connection;
+    private connectionDetail: MysqlConnectionDetail;
 
-    constructor(detail: object) {
-        this.connectionDetails = detail;
+    /**
+     *
+     * @param detail
+     */
+    constructor(detail: MysqlConnectionDetail) {
+        this.connectionDetail = detail;
     }
 
     open(): Promise<MysqlConnection> {
         return new Promise((resolve, reject) => {
             if (!this.resource) {
-                this.resource = mysql.createConnection(this.connectionDetails);
+                this.resource = mysql.createConnection(this.connectionDetail.toObject());
                 this.resource.connect(error => {
                     if (error) {
                         reject(error);
@@ -49,11 +56,10 @@ export class MysqlConnection implements ConnectionInterface {
         return new Promise((resolve, reject) => {
             return this.open()
                 .then(connection => {
-                    connection.resource.query(query.assemble(), query.params(), (error, results, fields) => {
+                    connection.resource.query(query.assemble(), (error, results, fields) => {
                         if (error) {
                             reject(error);
                         } else {
-                            this.lastQuery = query;
                             resolve(new MysqlResult(results, fields));
                         }
                     });
@@ -62,5 +68,25 @@ export class MysqlConnection implements ConnectionInterface {
                     console.log(error);
                 });
         })
+    }
+
+    select(adapter: AdapterInterface, rows?: Array<string>): MysqlQuerySelect {
+        return new MysqlQuerySelect(adapter, rows);
+    }
+
+    escape(param: any): string {
+        return mysql.escape(param);
+    }
+
+    escapeId(id: string): string {
+        return mysql.escapeId(id);
+    }
+
+    format(query: string, params: Array<any>): string {
+        return mysql.format(query, params);
+    }
+
+    database(): string {
+        return this.connectionDetail.database();
     }
 }
