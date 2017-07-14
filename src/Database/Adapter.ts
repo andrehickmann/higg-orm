@@ -60,7 +60,6 @@ export class DatabaseAdapter implements AdapterInterface {
     query(query: QueryInterface): Promise<ResultInterface> {
         return this.connect()
             .then(connection => {
-                query.adapter(this);
                 this.memorizeQuery(query);
                 return connection.query(query);
             })
@@ -87,6 +86,11 @@ export class DatabaseAdapter implements AdapterInterface {
         return this.adapterName;
     }
 
+    /**
+     * Returning name of database which is used, if any.
+     *
+     * @return {string}
+     */
     database(): string {
         return this.connection.database();
     }

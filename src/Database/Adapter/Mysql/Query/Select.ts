@@ -26,7 +26,7 @@ export class MysqlQuerySelect implements QuerySelectInterface {
     readonly CONST_ORDER_ASC = 'ASC';
 
     constructor(adapter: AdapterInterface, rows?: Array<string>) {
-        this.adapter(adapter);
+        this.databaseAdapter = adapter;
         this.rows = rows;
     }
 
@@ -93,11 +93,11 @@ export class MysqlQuerySelect implements QuerySelectInterface {
      * Selecting which table you want query. returning the MysqlQuerySelect object
      * for a fluent interface.
      *
-     * @param tableName string
+     * @param table string
      * @return {MysqlQuerySelect}
      */
-    from(tableName: string): MysqlQuerySelect {
-        this.tableFrom = tableName;
+    from(table: string): MysqlQuerySelect {
+        this.tableFrom = table;
         return this;
     }
 
@@ -140,11 +140,6 @@ export class MysqlQuerySelect implements QuerySelectInterface {
     limit(count: number, offset?: number): MysqlQuerySelect {
         offset = offset || 0;
         this.limitData = {count: count, page: offset};
-        return this;
-    }
-
-    adapter(databaseAdapter: AdapterInterface): MysqlQuerySelect {
-        this.databaseAdapter = databaseAdapter;
         return this;
     }
 
