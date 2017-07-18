@@ -8,6 +8,4 @@ export interface QueryInterface {
      * @return string
      */
     assemble(): string;
-
-    params(): Array<any>;
 }

@@ -119,6 +119,13 @@ export class MysqlQuerySelect implements QuerySelectInterface {
         return this;
     }
 
+    /**
+     * Adding order by clause to the query.
+     *
+     * @param by
+     * @param direction
+     * @return {MysqlQuerySelect}
+     */
     order(by: string, direction: string): MysqlQuerySelect {
         if (!by) {
             throw new Error('No column to order by given.');
@@ -141,14 +148,5 @@ export class MysqlQuerySelect implements QuerySelectInterface {
         offset = offset || 0;
         this.limitData = {count: count, page: offset};
         return this;
-    }
-
-    params(): Array<any> {
-       let params = [];
-       params.push(this.tableFrom);
-       for (let i in this.whereData) {
-           params.push(this.whereData[i].params);
-       }
-       return params;
     }
 }
