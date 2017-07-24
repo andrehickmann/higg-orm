@@ -1,7 +1,8 @@
 import {Table} from './Database/Table';
 import {ResultRow} from './Database/Result/Row';
+import {ModelInterface} from "./Model/Interface";
 
-export abstract class Model {
+export class Model implements ModelInterface{
     private data: ResultRow;
     private tableInstance: Table;
 

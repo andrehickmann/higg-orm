@@ -149,4 +149,12 @@ export class MysqlQuerySelect implements QuerySelectInterface {
         this.limitData = {count: count, page: offset};
         return this;
     }
+
+    leftJoin(on: string, params: Array<any>): MysqlQuerySelect {
+        return this;
+    }
+
+    rightJoin(on: string, params: Array<any>): MysqlQuerySelect {
+        return this;
+    }
 }
