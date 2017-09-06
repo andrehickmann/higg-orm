@@ -1,13 +1,21 @@
-import {ResultRow} from './Database/Result/Row';
 import {ModelInterface} from "./Model/Interface";
 import {TableInterface} from "./Database/Table/Interface";
+import {ResultRowInterface} from "./Database/Result/Row/Interface";
 
+/**
+ *
+ */
 export class Model implements ModelInterface {
     private data: object;
     private tableInstance: TableInterface;
 
+    /**
+     *
+     * @param data ResultRow, the result from the select-query.
+     * @param table TableInterface
+     */
     constructor(
-        data: ResultRow,
+        data: ResultRowInterface,
         table: TableInterface
     ) {
         this.tableInstance = table;
@@ -19,9 +27,9 @@ export class Model implements ModelInterface {
      *
      * @param data
      */
-    private mapData(data: ResultRow): void {
+    private mapData(data: ResultRowInterface): void {
         this.data = this.table().prepareDataForModel(data);
-   }
+    }
 
     /**
      * getting the table of the model.
