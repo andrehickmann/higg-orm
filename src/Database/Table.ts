@@ -1,5 +1,6 @@
 import { AdapterInterface } from './Adapter/Interface';
-import {TableInterface} from "./Table/Interface";
+import { TableInterface } from "./Table/Interface";
+import { ResultRow } from "./Result/Row";
 
 export class Table implements TableInterface {
 
@@ -44,5 +45,16 @@ export class Table implements TableInterface {
             this.tableColumns = [];
         }
         return this.tableColumns;
+    }
+
+    /**
+     * preparing the data for the model.
+     * parsing the data out of the result and map it to the model.
+     *
+     * @param data
+     * @return {{}}
+     */
+    prepareDataForModel(data: ResultRow): object {
+        return data.data();
     }
 }

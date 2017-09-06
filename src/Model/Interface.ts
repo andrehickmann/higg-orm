@@ -1,5 +1,5 @@
-
 import {TableInterface} from "../Database/Table/Interface";
+
 export interface ModelInterface {
 
     /**

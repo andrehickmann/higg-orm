@@ -63,7 +63,7 @@ export interface AdapterInterface {
      *
      * @return QuerySelectInterface
      */
-    select(rows: Array<string>): QuerySelectInterface;
+    select(rows?: Array<string>): QuerySelectInterface;
 
     /**
      * returning the name of the database which the adapter is connected to.

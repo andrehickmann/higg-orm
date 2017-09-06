@@ -27,7 +27,9 @@ export class MysqlQuerySelect implements QuerySelectInterface {
 
     constructor(adapter: AdapterInterface, rows?: Array<string>) {
         this.databaseAdapter = adapter;
-        this.rows = rows;
+        if (rows) {
+            this.rows = rows;
+        }
     }
 
     /**
@@ -40,7 +42,7 @@ export class MysqlQuerySelect implements QuerySelectInterface {
 
         this.query = `${this.CONST_SELECT} `;
         if (!this.rows) {
-            this.query += '* ';
+            this.query += "* ";
         } else {
             for ( let iRow = 0; iRow < this.rows.length; iRow++) {
                 this.query += '??';
@@ -72,9 +74,9 @@ export class MysqlQuerySelect implements QuerySelectInterface {
             if (iOrder === 0) {
                 this.query += ` ${this.CONST_ORDER}`;
             } else {
-                this.query += ',';
+                this.query += ",";
             }
-            this.query += ' ??';
+            this.query += " ??";
             params.push(this.orderData[iOrder].by);
             if (this.orderData[iOrder].direction) {
                 this.query += ` ${this.orderData[iOrder].direction}`;
@@ -82,7 +84,7 @@ export class MysqlQuerySelect implements QuerySelectInterface {
         }
 
         // adding LIMIT part
-        if (this.limitData.count > 0) {
+        if (this.limitData && this.limitData.count > 0) {
             this.query += ` ${this.CONST_LIMIT} ${this.limitData.count}`;
         }
 

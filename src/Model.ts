@@ -1,14 +1,14 @@
-import {Table} from './Database/Table';
 import {ResultRow} from './Database/Result/Row';
 import {ModelInterface} from "./Model/Interface";
+import {TableInterface} from "./Database/Table/Interface";
 
-export class Model implements ModelInterface{
-    private data: ResultRow;
-    private tableInstance: Table;
+export class Model implements ModelInterface {
+    private data: object;
+    private tableInstance: TableInterface;
 
     constructor(
         data: ResultRow,
-        table: Table
+        table: TableInterface
     ) {
         this.tableInstance = table;
         this.mapData(data);
@@ -19,17 +19,15 @@ export class Model implements ModelInterface{
      *
      * @param data
      */
-    private mapData(data: object): void {
-//        let data = this.table().prepareDataForModel(data),
-//            modelName = this.table().getName();
-//        _.extend(this, data[modelName]);
+    private mapData(data: ResultRow): void {
+        this.data = this.table().prepareDataForModel(data);
    }
 
     /**
      * getting the table of the model.
-     * @return {Table}
+     * @return {TableInterface}
      */
-    table(): Table {
+    table(): TableInterface {
         return this.tableInstance;
     }
 }
