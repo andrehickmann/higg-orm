@@ -1,6 +1,6 @@
 {
   "name": "higg-orm",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "basic orm with support for mysql-database",
   "main": "index.ts",
   "scripts": {
